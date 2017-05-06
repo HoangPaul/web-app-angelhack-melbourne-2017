@@ -1,7 +1,18 @@
 .searchbox {
     position: absolute;
-    top: 20%;
+    box-sizing: border-box;
+    top: 15%;
     left: 10%;
     right: 10%;
     width: 80%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: 'Roboto';
+    letter-spacing: 0.7px;
+    font-size: 16px;
+    border: none;
+    margin: 0;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
 }

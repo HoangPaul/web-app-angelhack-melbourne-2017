@@ -1,18 +1,39 @@
 /* global google */
 
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, DirectionsRenderer} from "react-google-maps";
+import { withGoogleMap, GoogleMap, DirectionsRenderer } from "react-google-maps";
+
+import GoogleMapStyles from './CustomGoogleMapStyle.json';
+import CustomGooglePolylineStyle from './CustomGooglePolylineStyle.json';
+
+import Marker from './marker.png';
+
+const CustomGoogleMarkerStyle = {
+    icon: Marker
+};
 
 const GoogleMaps = withGoogleMap(props => (
     <GoogleMap
         defaultZoom={props.zoom}
         center={props.center}
+        defaultOptions={{styles: GoogleMapStyles}}
     >
-        {props.canSearchDirection() && <DirectionsRenderer directions={props.directions} />}
+        {props.directions &&
+            <DirectionsRenderer directions={props.directions}
+                                options={{
+                                    markerOptions: CustomGoogleMarkerStyle,
+                                    polylineOptions: CustomGooglePolylineStyle
+                                }}
+            />
+        }
     </GoogleMap>
 ));
 
 class Map extends Component {
+    
+    state = {
+        directions: null
+    };
     
     componentDidMount() {
         navigator.geolocation.getCurrentPosition(position => {
@@ -23,13 +44,13 @@ class Map extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.origin.lat !== nextProps.origin.lat
-            || this.props.origin.lng !== nextProps.origin.lng
-            || this.props.destination.lat !== nextProps.destination.lng
-            || this.props.destination.lng !== nextProps.destination.lng
+    componentDidUpdate(prevProps) {
+        if (this.props.origin.lat !== prevProps.origin.lat
+            || this.props.origin.lng !== prevProps.origin.lng
+            || this.props.destination.lat !== prevProps.destination.lat
+            || this.props.destination.lng !== prevProps.destination.lng
         ) {
-            this.getDirections();   
+            this.retrieveAndLoadDirections();   
         }
     }
     
@@ -39,51 +60,53 @@ class Map extends Component {
             && this.props.destination.lat !== null
             && this.props.destination.lng !== null;
     }
-    
-    getDirections() {
+
+    retrieveAndLoadDirections() {
         if (!this.canSearchDirection()) {
             return;
         }
+
         const DirectionsService = new google.maps.DirectionsService();
         
-        console.log([this.props.origin.lat, this.props.origin.lng]);
-        console.log([this.props.destination.lat, this.props.destination.lng]);
         DirectionsService.route({
             origin: new google.maps.LatLng(this.props.origin.lat, this.props.origin.lng),
             destination: new google.maps.LatLng(this.props.destination.lat, this.props.destination.lng),
             travelMode: google.maps.TravelMode.DRIVING,
         }, (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
-                console.log(result);
+                this.props.onSuccessfulDirectionRequest();
                 this.setState({
                     directions: result,
                 });
             } else {
                 console.error(`error fetching directions`);
                 console.log(result);
+                console.log(status);
+                console.log(this.props.origin);
+                console.log(this.props.destination);
             }
         });
     }
     
-    getCenter() {
-        return {lat: this.props.origin.lat, lng: this.props.origin.lng};
-    }
-    
     render() {
-        return (
-            <GoogleMaps
-                zoom={17}
-                center={this.getCenter()}
-                hasDirections={this.hasDirections.bind(this)}
-                getDirections={this.getDirections.bind(this)}
-                containerElement={
-                    <div style={{ height: `100%` }} />
-                }
-                mapElement={
-                    <div style={{ height: `100%` }} />
-                }
-            />
-        );
+        if (this.props.origin.lat !== null && this.props.origin.lng !== null) {
+            return (
+                <GoogleMaps
+                    zoom={15}
+                    center={{lat: this.props.origin.lat, lng: this.props.origin.lng}}
+                    canSearchDirection={this.canSearchDirection.bind(this)}
+                    directions={this.state.directions}
+                    containerElement={
+                        <div style={{height: `100%`}}/>
+                    }
+                    mapElement={
+                        <div style={{height: `100%`}}/>
+                    }
+                />
+            );
+        } else {
+            return null;
+        }
     }
 }
 

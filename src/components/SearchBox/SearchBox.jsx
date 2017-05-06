@@ -12,7 +12,7 @@ class SearchBox extends Component {
         return (
             <Autocomplete className="searchbox" 
                           type="text"
-                          placeholder="Where to?"
+                          placeholder="Destination"
                           onPlaceSelected={(place) => {
                               this.props.handleSearchRequest(
                                   place.geometry.location.lat(),

@@ -1,0 +1,12 @@
+.end-parking {
+    background-color: #2196F3;
+    letter-spacing: 1.2px;
+    border: none;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 24px;
+    width: 100%;
+    font-weight: bold;
+    color: white;
+}

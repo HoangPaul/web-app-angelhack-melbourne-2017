@@ -1,0 +1,13 @@
+.in-transit {
+    overflow: hidden;
+}
+
+.in-transit .icon {
+    width: 20%;
+    float: left;
+}
+
+.in-transit .details {
+    width: 80%;
+    float: left;
+}
