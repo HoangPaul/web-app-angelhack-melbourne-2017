@@ -119,6 +119,56 @@ class App extends Component {
     onConfirmEndJourney() {
         console.log('end journey')
     }
+
+    onBackAction(newState) {
+        switch (newState) {
+            case Constants.STATE_SEARCH:
+                this.setState({
+                    overlay: {
+                        search: true,
+                        chooseParking: false,
+                        parkingDetails: false,
+                        inTransit: false,
+                        endParking: false
+                    }
+                });
+                break;
+            case Constants.STATE_PICK:
+                this.setState({
+                    overlay: {
+                        search: false,
+                        chooseParking: true,
+                        parkingDetails: false,
+                        inTransit: false,
+                        endParking: false
+                    }
+                });
+                break;
+            case Constants.STATE_DETAILS:
+
+                this.setState({
+                    overlay: {
+                        search: false,
+                        chooseParking: false,
+                        parkingDetails: true,
+                        inTransit: false,
+                        endParking: false
+                    }
+                });
+                break;
+            case Constants.STATE_TRANSIT:
+                this.setState({
+                    overlay: {
+                        search: false,
+                        chooseParking: false,
+                        parkingDetails: false,
+                        inTransit: true,
+                        endParking: false
+                    }
+                });
+                break;
+        }
+    }
     
     handleSearchRequest(lat, lng) {
         console.log('destination is ' + lat + ' ' + lng);
@@ -180,6 +230,7 @@ class App extends Component {
                     <Drawer>
                         {this.state.overlay.chooseParking &&
                             <ChooseParking
+                                backAction={this.onBackAction.bind(this, Constants.STATE_SEARCH)}
                                 onChooseParkingType={this.onChooseParkingType.bind(this)}
                             />
                         }
@@ -189,14 +240,18 @@ class App extends Component {
                                 timeOfArrival="9:35 PM"
                                 parkingType={Constants.PARKING_TYPE_FREE}
                                 parkingDuration="02:00"
+                                backAction={this.onBackAction.bind(this, Constants.STATE_PICK)}
                                 onConfirmParking={this.onConfirmParking.bind(this)}
                             />
                         }
                         {this.state.overlay.inTransit &&
-                        <InTransit />
+                        <InTransit
+                            backAction={this.onBackAction.bind(this, Constants.STATE_DETAILS)}
+                        />
                         }
                         {this.state.overlay.endParking &&
                         <EndParking
+                            backAction={this.onBackAction.bind(this, Constants.STATE_TRANSIT)}
                             onConfirmEndJourney={this.onConfirmEndJourney.bind(this)}
                         />
                         }

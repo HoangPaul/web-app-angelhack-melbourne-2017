@@ -92,7 +92,7 @@ class Map extends Component {
         }, (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
                 this.props.onSuccessfulDirectionRequest();
-                console.log(result);
+                this.props.setOrigin(result.routes[0].overview_path[0].lat(), result.routes[0].overview_path[0].lng());
                 this.setState({
                     directions: result,
                 });
