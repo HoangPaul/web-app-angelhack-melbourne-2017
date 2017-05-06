@@ -7,14 +7,14 @@ class ChooseParking extends Component {
     render() {
         return (
             <div className="choose-parking">
-                <h1>Parking Type:</h1>
+                <h1>Parking type:</h1>
                 <div className="parking-choice">
-                    <button onClick={this.props.onChooseParkingType.bind(this, Constants.PARKING_TYPE_FREE)}>
+                    <button className="button" onClick={this.props.onChooseParkingType.bind(this, Constants.PARKING_TYPE_FREE)}>
                         Free Parking
                     </button>
                 </div>
                 <div className="parking-choice">
-                    <button onClick={this.props.onChooseParkingType.bind(this, Constants.PARKING_TYPE_PAID)}>
+                    <button className="button" onClick={this.props.onChooseParkingType.bind(this, Constants.PARKING_TYPE_PAID)}>
                         Paid Parking
                     </button>
                 </div>

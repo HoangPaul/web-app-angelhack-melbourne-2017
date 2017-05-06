@@ -1,13 +1,31 @@
 .in-transit {
+    padding: 15px;
     overflow: hidden;
+}
+
+.in-transit h1 {
+    margin-bottom: 5px;
+}
+
+.in-transit p {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .in-transit .icon {
     width: 20%;
     float: left;
+    margin-top: 10px;
+}
+
+.in-transit .icon img {
+    max-width: 100%;
+    height: auto;
+    width: 100%;
 }
 
 .in-transit .details {
     width: 80%;
     float: left;
+    padding-left: 15px;
 }

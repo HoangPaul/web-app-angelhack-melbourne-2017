@@ -6,5 +6,19 @@
     list-style: none;
     margin-left: 0;
     margin-top: 0;
-    padding:0;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.parking-details li {
+    margin-bottom: 2px;
+}
+
+.button-action {
+    display: flex;
+    justify-content: center;
+}
+
+.parking-details .button {
+    width: 60%;
 }

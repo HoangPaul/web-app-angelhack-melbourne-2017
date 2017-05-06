@@ -1322,6 +1322,13 @@ cosmiconfig@^2.1.0, cosmiconfig@^2.1.1:
     parse-json "^2.2.0"
     require-from-string "^1.1.0"
 
+create-react-class@^15.5.2:
+  version "15.5.2"
+  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.5.2.tgz#6a8758348df660b88326a0e764d569f274aad681"
+  dependencies:
+    fbjs "^0.8.9"
+    object-assign "^4.1.1"
+
 cross-spawn@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-4.0.2.tgz#7b9247621c23adfdd3856004a823cbe397424d41"
@@ -3560,7 +3567,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@4.1.1, object-assign@^4.0.1, object-assign@^4.1.0:
+object-assign@4.1.1, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -4073,7 +4080,7 @@ promise@7.1.1, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.0, prop-types@^15.5.7, prop-types@~15.5.7:
+prop-types@^15.5.0, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@~15.5.7:
   version "15.5.8"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
   dependencies:
@@ -4187,16 +4194,18 @@ react-google-autocomplete@^1.0.13:
   dependencies:
     prop-types "^15.5.0"
 
-react-google-maps@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/react-google-maps/-/react-google-maps-6.3.0.tgz#ba7e0b3c2a3ad15ebdff55ecfe8c17a1c9cd8a6b"
+react-google-maps@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-google-maps/-/react-google-maps-7.0.0.tgz#94ebc20a5b2372ff8470c57975f7a36ff8075f60"
   dependencies:
     babel-runtime "^6.11.6"
     can-use-dom "^0.1.0"
+    create-react-class "^15.5.2"
     google-maps-infobox "^1.1.13"
     invariant "^2.2.1"
     lodash "^4.16.2"
     marker-clusterer-plus "^2.1.4"
+    prop-types "^15.5.8"
     react-display-name "^0.2.0"
     react-prop-types-element-of-type "^2.2.0"
     scriptjs "^2.5.8"

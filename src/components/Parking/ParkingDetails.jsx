@@ -30,7 +30,11 @@ class ParkingDetails extends Component {
                     <li>Type of parking: {this.formatParkingType(this.props.parkingType)}</li>
                     <li>Parking Duration: {this.props.parkingDuration}</li>
                 </ul>
-                <button onClick={this.props.onConfirmParking}>Confirm Parking</button>
+                <div className="button-action">
+                    <button className="button" onClick={this.props.onConfirmParking}>
+                        Confirm
+                    </button>
+                </div>
             </div>
         );
     }

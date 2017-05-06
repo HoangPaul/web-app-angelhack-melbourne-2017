@@ -17,6 +17,32 @@ body {
   text-align: center;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: #2196F3;
+  color: white;
+  border-radius: 2px;
+  border: none;
+  padding: 7px 15px;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  font-size: 20px;
+}
+
+.hackathon-demo-button {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 9999999999999;
+  left: 0;
+  padding: 15px;
+  text-align: center;
+  background-color: #F44336;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;

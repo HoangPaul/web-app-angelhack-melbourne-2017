@@ -15,11 +15,20 @@ const CustomGoogleMarkerStyle = {
     }
 };
 
+let googleMapInstance = null;
+const storeGoogleMapInstance = function(props) {
+    googleMapInstance = props;
+};
+
 const GoogleMaps = withGoogleMap(props => (
     <GoogleMap
+        ref={storeGoogleMapInstance}
         defaultZoom={props.zoom}
         center={props.center}
-        defaultOptions={{styles: GoogleMapStyles}}
+        defaultOptions={{
+            styles: GoogleMapStyles,
+            disableDefaultUI: true
+        }}
     >
         {props.directions &&
             <DirectionsRenderer directions={props.directions}
@@ -44,6 +53,7 @@ class Map extends Component {
                 return;
             }
             this.props.setOrigin(position.coords.latitude, position.coords.longitude);
+            this.props.updateCenter(position.coords.latitude, position.coords.longitude);
         });
     }
 
@@ -54,6 +64,10 @@ class Map extends Component {
             || this.props.destination.lng !== prevProps.destination.lng
         ) {
             this.retrieveAndLoadDirections();   
+        }
+        if (googleMapInstance !== null) {
+            googleMapInstance.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(this.props.mapSettings.zoom);
+            googleMapInstance.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.panTo(this.props.mapSettings.center);
         }
     }
     
@@ -78,6 +92,7 @@ class Map extends Component {
         }, (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
                 this.props.onSuccessfulDirectionRequest();
+                console.log(result);
                 this.setState({
                     directions: result,
                 });
@@ -92,11 +107,11 @@ class Map extends Component {
     }
     
     render() {
-        if (this.props.origin.lat !== null && this.props.origin.lng !== null) {
+        if (this.props.mapSettings.center !== null) {
             return (
                 <GoogleMaps
-                    zoom={15}
-                    center={{lat: this.props.origin.lat, lng: this.props.origin.lng}}
+                    zoom={this.props.mapSettings.zoom}
+                    center={this.props.mapSettings.center}
                     canSearchDirection={this.canSearchDirection.bind(this)}
                     directions={this.state.directions}
                     containerElement={

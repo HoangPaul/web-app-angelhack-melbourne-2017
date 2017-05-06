@@ -7,6 +7,7 @@ import EndParking from "./components/Parking/EndParking";
 import InTransit from "./components/Parking/InTransit";
 import ParkingDetails from "./components/Parking/ParkingDetails";
 import SearchBox from './components/SearchBox/SearchBox';
+import TopDrawer from './components/TopDrawer/TopDrawer';
 import Constants from './Constants';
 
 import './App.css';
@@ -22,12 +23,16 @@ class App extends Component {
             lat: null,
             lng: null
         },
+        mapSettings: {
+            zoom: 15,
+            center: null
+        },
         overlay: {
             search: true,
             chooseParking: false,
             parkingDetails: false,
             inTransit: false,
-            endJourney: false
+            endParking: false
         }
     };
     
@@ -35,7 +40,7 @@ class App extends Component {
         return this.state.overlay.chooseParking !== false
             || this.state.overlay.parkingDetails !== false
             || this.state.overlay.inTransit !== false
-            || this.state.overlay.endJourney !== false;
+            || this.state.overlay.endParking !== false;
     }
     
     showParkingDrawer() {
@@ -45,7 +50,7 @@ class App extends Component {
                 chooseParking: true,
                 parkingDetails: false,
                 inTransit: false,
-                endJourney: false
+                endParking: false
             }
         });
     }
@@ -57,7 +62,7 @@ class App extends Component {
                 chooseParking: false,
                 parkingDetails: true,
                 inTransit: false,
-                endJourney: false
+                endParking: false
             }
         });
     }
@@ -69,7 +74,7 @@ class App extends Component {
                 chooseParking: false,
                 parkingDetails: false,
                 inTransit: true,
-                endJourney: false
+                endParking: false
             }
         });
     }
@@ -81,7 +86,7 @@ class App extends Component {
                 chooseParking: false,
                 parkingDetails: false,
                 inTransit: false,
-                endJourney: true
+                endParking: true
             }
         });
     }
@@ -92,10 +97,22 @@ class App extends Component {
     }
 
     onConfirmParking() {
+        this.setState({
+            mapSettings: {
+                zoom: 19,
+                center: this.state.origin
+            }
+        });
         this.showInTransitDrawer();
     }
 
     onNearDestination() {
+        this.setState({
+            mapSettings: {
+                zoom: 19,
+                center: {lat: this.state.destination.lat, lng: this.state.destination.lng}
+            }
+        });
         this.showEndJourneyDrawer();
     }
 
@@ -110,6 +127,18 @@ class App extends Component {
             lng: lng
         }});
         this.showParkingDrawer();
+    }
+    
+    updateCenter(lat, lng) {
+        this.setState({
+            mapSettings: {
+                zoom: this.state.mapSettings.zoom,
+                center: {
+                    lat: lat,
+                    lng: lng
+                }
+            }
+        });
     }
     
     setOrigin(lat, lng) {
@@ -127,7 +156,21 @@ class App extends Component {
                     setOrigin={this.setOrigin.bind(this)}
                     origin={this.state.origin}
                     destination={this.state.destination}
+                    mapSettings={this.state.mapSettings}
+                    updateCenter={this.updateCenter.bind(this)}
                 />
+                {this.state.overlay.inTransit &&
+                    <div className="hackathon-demo-button"
+                         onClick={this.onNearDestination.bind(this)}>
+                        Go to destination (Demo only)
+                    </div>
+                }
+                {this.state.overlay.endParking &&
+                    <TopDrawer>
+                        <h1>Parking spot</h1>
+                        <h2>Parking type: parallel parking</h2>
+                    </TopDrawer>
+                }
                 {this.state.overlay.search &&
                     <SearchBox
                         handleSearchRequest={this.handleSearchRequest.bind(this)}
@@ -150,11 +193,9 @@ class App extends Component {
                             />
                         }
                         {this.state.overlay.inTransit &&
-                        <InTransit
-                            onNearDestination={this.onNearDestination.bind(this)}
-                        />
+                        <InTransit />
                         }
-                        {this.state.overlay.endJourney &&
+                        {this.state.overlay.endParking &&
                         <EndParking
                             onConfirmEndJourney={this.onConfirmEndJourney.bind(this)}
                         />
