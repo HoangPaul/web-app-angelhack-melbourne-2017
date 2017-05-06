@@ -6,10 +6,13 @@ import { withGoogleMap, GoogleMap, DirectionsRenderer } from "react-google-maps"
 import GoogleMapStyles from './CustomGoogleMapStyle.json';
 import CustomGooglePolylineStyle from './CustomGooglePolylineStyle.json';
 
-import Marker from './marker.png';
-
 const CustomGoogleMarkerStyle = {
-    icon: Marker
+    icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: '#2196F3',
+        strokeColor: '#2196F3',
+        scale: 2
+    }
 };
 
 const GoogleMaps = withGoogleMap(props => (
