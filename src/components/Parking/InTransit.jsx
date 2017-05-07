@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import './InTransit.css';
-import Icon from './icons/direction_continue_right.png';
+import Icon from './icons/direction_continue_left.png';
 
 class InTransit extends Component {
     render() {
@@ -12,8 +12,8 @@ class InTransit extends Component {
                     <img src={Icon} />
                 </div>
                 <div className="details">
-                    <h1>1.5 KM</h1>
-                    <p>Turn right on Lygon Street</p>
+                    <h1>0.2 KM</h1>
+                    <p>Turn right on Parker Street</p>
                 </div>
             </div>
         );

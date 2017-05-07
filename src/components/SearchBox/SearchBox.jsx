@@ -13,6 +13,9 @@ class SearchBox extends Component {
             <Autocomplete className="searchbox" 
                           type="text"
                           placeholder="Destination"
+                          componentRestrictions={{
+                              country: "au"
+                          }}
                           onPlaceSelected={(place) => {
                               this.props.handleSearchRequest(
                                   place.geometry.location.lat(),

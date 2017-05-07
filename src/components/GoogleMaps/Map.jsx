@@ -1,7 +1,7 @@
 /* global google */
 
 import React, { Component } from 'react';
-import { withGoogleMap, GoogleMap, DirectionsRenderer } from "react-google-maps";
+import { withGoogleMap, GoogleMap, DirectionsRenderer, Marker } from "react-google-maps";
 
 import GoogleMapStyles from './CustomGoogleMapStyle.json';
 import CustomGooglePolylineStyle from './CustomGooglePolylineStyle.json';
@@ -38,6 +38,17 @@ const GoogleMaps = withGoogleMap(props => (
                                 }}
             />
         }
+        {props.origin &&
+            <Marker
+                position={props.origin}
+                icon={{
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#2196F3',
+                    strokeColor: '#2196F3',
+                    scale: 3
+                }}
+            />
+        }
     </GoogleMap>
 ));
 
@@ -46,7 +57,7 @@ class Map extends Component {
     state = {
         directions: null
     };
-    
+
     componentDidMount() {
         navigator.geolocation.getCurrentPosition(position => {
             if (this.isUnmounted) {
@@ -63,7 +74,7 @@ class Map extends Component {
             || this.props.destination.lat !== prevProps.destination.lat
             || this.props.destination.lng !== prevProps.destination.lng
         ) {
-            this.retrieveAndLoadDirections();   
+            this.retrieveAndLoadDirections();
         }
         if (googleMapInstance !== null) {
             googleMapInstance.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(this.props.mapSettings.zoom);
@@ -85,6 +96,9 @@ class Map extends Component {
 
         const DirectionsService = new google.maps.DirectionsService();
         
+        console.log('==============');
+        console.log(this.props.destination.lat);
+        console.log(this.props.destination.lng);
         DirectionsService.route({
             origin: new google.maps.LatLng(this.props.origin.lat, this.props.origin.lng),
             destination: new google.maps.LatLng(this.props.destination.lat, this.props.destination.lng),
@@ -110,6 +124,7 @@ class Map extends Component {
         if (this.props.mapSettings.center !== null) {
             return (
                 <GoogleMaps
+                    origin={this.props.origin}
                     zoom={this.props.mapSettings.zoom}
                     center={this.props.mapSettings.center}
                     canSearchDirection={this.canSearchDirection.bind(this)}

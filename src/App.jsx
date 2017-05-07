@@ -23,8 +23,11 @@ class App extends Component {
             lat: null,
             lng: null
         },
+        parkingDetails: {
+            type: 'Free'
+        },
         mapSettings: {
-            zoom: 15,
+            zoom: 16,
             center: null
         },
         overlay: {
@@ -33,7 +36,8 @@ class App extends Component {
             parkingDetails: false,
             inTransit: false,
             endParking: false
-        }
+        },
+        hasShownParkingDrawer: false
     };
     
     shouldDrawerBeActive() {
@@ -44,15 +48,18 @@ class App extends Component {
     }
     
     showParkingDrawer() {
-        this.setState({
-            overlay: {
-                search: false,
-                chooseParking: true,
-                parkingDetails: false,
-                inTransit: false,
-                endParking: false
-            }
-        });
+        if (!this.hasShownParkingDrawer) {
+            this.hasShownParkingDrawer = true;
+            this.setState({
+                overlay: {
+                    search: false,
+                    chooseParking: true,
+                    parkingDetails: false,
+                    inTransit: false,
+                    endParking: false
+                }
+            });
+        }
     }
     
     showParkingDetailsDrawer() {
@@ -68,6 +75,7 @@ class App extends Component {
     }
     
     showInTransitDrawer() {
+        this.hasShownParkingDrawer = false;
         this.setState({
             overlay: {
                 search: false,
@@ -92,7 +100,31 @@ class App extends Component {
     }
     
     onChooseParkingType(parkingType) {
-        // query API
+        this.setState({
+            parkingDetails: {
+                type: parkingType === Constants.PARKING_TYPE_FREE ? 'Free' : 'Paid'
+            }
+        });
+        const xmlRequest = new XMLHttpRequest();
+        xmlRequest.addEventListener('load', () => {
+            const obj = JSON.parse(xmlRequest.response);
+            const newData = {
+                destination: {
+                    lat: parseFloat(-obj.lng1),
+                    lng: parseFloat(obj.lat1)
+                }
+            };
+            this.setState(newData);
+        });
+        xmlRequest.open('POST', 'http://127.0.0.1:8080/parkingspot');
+        xmlRequest.setRequestHeader('Content-Type', 'application/json');
+        xmlRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
+        const data = {
+            "lat": this.state.destination.lat,
+            "lng": this.state.destination.lng,
+        };
+        xmlRequest.send(JSON.stringify(data));
+        
         this.showParkingDetailsDrawer();
     }
 
@@ -117,7 +149,7 @@ class App extends Component {
     }
 
     onConfirmEndJourney() {
-        console.log('end journey')
+        window.location.reload(false);
     }
 
     onBackAction(newState) {
@@ -239,7 +271,7 @@ class App extends Component {
                                 destination="Lonsdale St, Melbourne"
                                 timeOfArrival="9:35 PM"
                                 parkingType={Constants.PARKING_TYPE_FREE}
-                                parkingDuration="02:00"
+                                parkingDuration="01:00"
                                 backAction={this.onBackAction.bind(this, Constants.STATE_PICK)}
                                 onConfirmParking={this.onConfirmParking.bind(this)}
                             />

@@ -25,8 +25,7 @@ class ParkingDetails extends Component {
             <div className="parking-details">
                 <h1>Journey:</h1>
                 <ul>
-                    <li>Destination: {this.props.destination}</li>
-                    <li>Time of Arrival: {this.formatTime(this.props.timeOfArrival)}</li>
+                    <li>Time of Arrival: 6:45 PM</li>
                     <li>Type of parking: {this.formatParkingType(this.props.parkingType)}</li>
                     <li>Parking Duration: {this.props.parkingDuration}</li>
                 </ul>
